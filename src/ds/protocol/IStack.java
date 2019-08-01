@@ -12,7 +12,7 @@ public interface IStack<E> {
     /**
      * 判断栈是否为空
      *
-     * @return true -> 没有元素
+     * @return true 没有元素
      */
     boolean isEmpty();
 

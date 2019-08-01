@@ -1,4 +1,4 @@
-package algorithm.sort;
+package algorithm;
 
 /**
  *  递归时间复杂度分析

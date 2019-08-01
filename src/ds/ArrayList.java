@@ -4,12 +4,8 @@ import ds.exception.OutOfIndexException;
 import ds.protocol.IList;
 
 /**
- * Author: Aaron
- * Create Date: 2019/7/28
- * Version: v1.0
- *
- * <p>
  * 线性表
+ * * <p>
  * 优点：随机访问索引位置快，时间复杂度是 O(1)
  * 缺点：删除和添加相对慢，时间复杂 O(n)
  *      需要连续的存储空间，不能时刻保证空间最大利用，可以通过动态扩容和缩容减少空间浪费
@@ -26,6 +22,11 @@ import ds.protocol.IList;
  *      索引位置修改 O(1)
  * 查询：
  *      遍历查询 O(n)
+ * </p>
+ *
+ * @author J.Heavens
+ * @since create at 2019/7/28
+ * @version v1.0
  */
 
 public class ArrayList<E> implements IList<E> {
@@ -37,6 +38,7 @@ public class ArrayList<E> implements IList<E> {
      *
      * @param capacity 容量
      */
+    @SuppressWarnings("unchecked")
     public ArrayList(int capacity) {
         data = (E[]) new Object[capacity];
         size = capacity;
