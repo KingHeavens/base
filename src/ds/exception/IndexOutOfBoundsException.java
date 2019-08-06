@@ -7,8 +7,8 @@ package ds.exception;
  * <p>
  * DSA
  */
-public class OutOfIndexException extends RuntimeException {
-    public OutOfIndexException(int size, int index) {
+public class IndexOutOfBoundsException extends RuntimeException {
+    public IndexOutOfBoundsException(int size, int index) {
         super("out of index, current index = " + index + " capacity = " + size);
     }
 }

@@ -80,4 +80,17 @@ public class ArrayStack<E> implements IStack<E> {
     public void push(E element) {
         mArray.addLast(element);
     }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append(String.format("ArrayStack size = %s  capacity = %s \n", getSize(), mArray.getCapacity()));
+        builder.append("[ top <--");
+        for (int i = getSize() - 1; i >= 0; i--) {
+            builder.append(mArray.get(i));
+            if (i > 0) builder.append(",");
+        }
+        builder.append("] <-- bottom");
+        return builder.toString();
+    }
 }

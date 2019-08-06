@@ -1,6 +1,6 @@
 package ds;
 
-import ds.exception.OutOfIndexException;
+import ds.exception.IndexOutOfBoundsException;
 import ds.protocol.IList;
 
 /**
@@ -41,7 +41,7 @@ public class ArrayList<E> implements IList<E> {
     @SuppressWarnings("unchecked")
     public ArrayList(int capacity) {
         data = (E[]) new Object[capacity];
-        size = capacity;
+        size = 0;
     }
 
     /**
@@ -99,8 +99,8 @@ public class ArrayList<E> implements IList<E> {
     @Override
     public void add(int index, E element) {
         checkCapacity();
-        if (index < -1 || index > size) {
-            throw new OutOfIndexException(getCapacity(), index);
+        if (index < 0 || index > size) {
+            throw new IndexOutOfBoundsException(getCapacity(), index);
         }
         //把index往后的元素向后移动一位
         //方法一
@@ -130,7 +130,7 @@ public class ArrayList<E> implements IList<E> {
      * @param element 元素
      */
     public void addLast(E element) {
-        add(size - 1, element);
+        add(size, element);
     }
 
     /**
@@ -271,6 +271,7 @@ public class ArrayList<E> implements IList<E> {
      *
      * @param capacity 容量
      */
+    @SuppressWarnings("unchecked")
     private void resize(int capacity) {
         if (capacity <= 0) {
             return;
@@ -289,7 +290,7 @@ public class ArrayList<E> implements IList<E> {
      */
     private void checkIndex(int index) {
         if (index < 0 || index > size - 1) {
-            throw new OutOfIndexException(size, index);
+            throw new IndexOutOfBoundsException(size, index);
         }
     }
 
@@ -302,7 +303,7 @@ public class ArrayList<E> implements IList<E> {
             //throw new OutOfCapacityException(data.length);
             resize(size * 2);
         } else if (data.length / 4 > 0 && size == data.length / 4) {
-            resize(size / 2);
+            resize(data.length / 2);
         }
     }
 
@@ -311,9 +312,9 @@ public class ArrayList<E> implements IList<E> {
         StringBuilder builder = new StringBuilder();
         builder.append(String.format("ArrayList size = %s  capacity = %s \n", size, data.length));
         builder.append("[");
-        for (int i = 0; i < data.length; i--) {
+        for (int i = 0; i < size; i++) {
             builder.append(data[i]);
-            if (i < size) builder.append(",");
+            if (i < size - 1) builder.append(",");
         }
         builder.append("]");
         return builder.toString();

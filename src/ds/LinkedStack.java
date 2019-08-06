@@ -77,4 +77,17 @@ public class LinkedStack<E> implements IStack<E> {
     public void push(E element) {
         mData.add(0, element);
     }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append(String.format("LinkedStack size = %s \n", getSize()));
+        builder.append("[ top <--");
+        for (int i = 0; i < getSize(); i++) {
+            builder.append(mData.get(i));
+            if (i < getSize() - 1) builder.append(",");
+        }
+        builder.append("] <-- bottom");
+        return builder.toString();
+    }
 }

@@ -44,4 +44,9 @@ public class ArrayQueue<E> implements IQueue<E> {
     public E peek() {
         return null;
     }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

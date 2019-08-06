@@ -91,4 +91,9 @@ public class LinkedList<E> implements IList<E> {
     public boolean contains(E element) {
         return false;
     }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }
