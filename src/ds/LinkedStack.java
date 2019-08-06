@@ -4,23 +4,20 @@ import ds.exception.NoElementException;
 import ds.protocol.IStack;
 
 /**
- * 线性栈
- *
+ * 链式栈
  * <p>
- *     基于线性表实现的栈结构
- *
+ *     链表结构实现的栈
  * </p>
  *
  * @author J.Heavens
- * @since create at 2019/7/28
- * @version v1.0
- * @param <E> 元素
- */
-public class ArrayStack<E> implements IStack<E> {
-    private ArrayList<E> mArray;
+ * @version 1.0
+ * @since create at 2019/8/2
+ **/
+public class LinkedStack<E> implements IStack<E> {
+    private LinkedList<E> mData;
 
-    public ArrayStack() {
-        mArray = new ArrayList<>();
+    public LinkedStack() {
+        mData = new LinkedList<>();
     }
 
     /**
@@ -30,7 +27,7 @@ public class ArrayStack<E> implements IStack<E> {
      */
     @Override
     public boolean isEmpty() {
-        return mArray.isEmpty();
+        return mData.isEmpty();
     }
 
     /**
@@ -40,35 +37,35 @@ public class ArrayStack<E> implements IStack<E> {
      */
     @Override
     public int getSize() {
-        return mArray.getSize();
+        return mData.getSize();
     }
 
     /**
      * {@inheritDoc}
      *
      * @return
-     * @throws NoElementException 栈内没有元素
+     * @throws NoElementException 栈中没有元素时
      */
     @Override
     public E pop() {
         if (getSize() <= 0) {
-            throw new NoElementException("ArrayStack");
+            throw new NoElementException("LinkedStack");
         }
-        return mArray.removeLast();
+        return mData.remove(0);
     }
 
     /**
      * {@inheritDoc}
      *
      * @return
-     * @throws NoElementException 栈内没有元素
+     * @throws NoElementException 栈中没有元素时
      */
     @Override
     public E peek() {
         if (getSize() <= 0) {
-            throw new NoElementException("ArrayStack");
+            throw new NoElementException("LinkedStack");
         }
-        return mArray.get(getSize() - 1);
+        return mData.get(0);
     }
 
     /**
@@ -78,6 +75,6 @@ public class ArrayStack<E> implements IStack<E> {
      */
     @Override
     public void push(E element) {
-        mArray.addLast(element);
+        mData.add(0, element);
     }
 }

@@ -31,7 +31,17 @@ public class ArrayQueue<E> implements IQueue<E> {
     }
 
     @Override
-    public E getFront() {
+    public E poll() {
+        return null;
+    }
+
+    @Override
+    public E element() {
+        return null;
+    }
+
+    @Override
+    public E peek() {
         return null;
     }
 }

@@ -2,6 +2,18 @@ package ds;
 
 import ds.protocol.IQueue;
 
+/**
+ * 循环队列
+ * <p>
+ *     数组结构实现的队列，包含一个头指针{@code front}和一个尾指针{@code tail}
+ *     当{@code front == tail}时，队列为空
+ *     当{@code (front + 1) % size == tail}时，队列满
+ * </p>
+ *
+ * @author J.Heavens
+ * @version 1.0
+ * @since create at 2019/8/2
+ **/
 public class LoopQueue<E> implements IQueue<E> {
     private E[] data;
     private int front;
@@ -36,7 +48,17 @@ public class LoopQueue<E> implements IQueue<E> {
     }
 
     @Override
-    public E getFront() {
+    public E poll() {
+        return null;
+    }
+
+    @Override
+    public E element() {
+        return null;
+    }
+
+    @Override
+    public E peek() {
         return null;
     }
 }

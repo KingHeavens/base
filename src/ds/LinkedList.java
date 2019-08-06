@@ -6,7 +6,7 @@ import ds.protocol.IList;
  * 单链表
  *
  * @author J.Heavens
- * @since create at ${DATE}
+ * @since create at 2019/08/01
  * @version 1.0
  **/
 public class LinkedList<E> implements IList<E> {
