@@ -13,6 +13,11 @@ public class Printer {
         System.out.println(log);
     }
 
+    public static void println2(String log) {
+        System.out.println(log);
+        println();
+    }
+
     public static void println() {
         System.out.println();
     }
