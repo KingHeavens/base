@@ -13,18 +13,16 @@ import static test.Printer.println2;
  * @version 1.0
  * @since create at 2019/8/6
  **/
-public class HeavensTest {
+public class HeavensTest<E extends Comparable<E>> {
     private List<TestAction> mActions;
-    private Comparable[] mInputs;
-    private Comparable[] mLaseResults;
-    private int mTestNumber = 0;
-    private int mTestTime;
+    private E[] mInputs;
+    private E[] mLaseResults;
 
     public HeavensTest() {
         mActions = new ArrayList<>();
     }
 
-    public <E extends Comparable<E>> HeavensTest input(ITestInput<E> input) {
+    public HeavensTest input(ITestInput<E> input) {
         if (input == null) {
             throw new RuntimeException("ITestInput can not be null!");
         }
@@ -35,7 +33,7 @@ public class HeavensTest {
         return this;
     }
 
-    public <E extends Comparable<E>> HeavensTest addTestCase(ITestCase<E> operation) {
+    public HeavensTest addTestCase(ITestCase<E> operation) {
         if (operation == null) {
             throw new RuntimeException("ITestCase can not be null!");
         }
@@ -46,7 +44,7 @@ public class HeavensTest {
         return this;
     }
 
-    public <E extends Comparable<E>> HeavensTest continueWith(ITestCase<E> operation) {
+    public HeavensTest continueWith(ITestCase<E> operation) {
         if (operation == null) {
             throw new RuntimeException("ITestCase can not be null!");
         }
@@ -58,64 +56,66 @@ public class HeavensTest {
     }
 
     public boolean test(int testCount) {
-        mTestTime = 0;
         for (int i = 0; i < testCount; i ++) {
-            mTestTime ++;
-            println2("=========== Start test number of times:" + mTestTime + " ===========");
-            mTestNumber = 0;
+            println2("=========== Start Test Number of Times:" + (i + 1) + " ===========");
             for (TestAction action : mActions) {
                 if (!testAction(action)) {
-                    println2("=========== End test number of times:" + mTestTime + " [Result:FAILED] ===========");
+                    println2("=========== End Test Number of Times:" + (i + 1) + " [Result:FAILED] ===========");
                     return false;
                 }
             }
-            println2("=========== End test number of times:" + mTestTime + " [Result:ACCEPT] ===========");
+            println2("=========== End Test Number of Times:" + (i + 1) + " [Result:ACCEPT] ===========");
         }
         return true;
     }
 
+    @SuppressWarnings("unchecked")
     private boolean testAction(TestAction action) {
         ActionType actionType = action.actionType;
-        Comparable[] tests = null;
-        Comparable[] expects = null;
+        if (actionType == ActionType.INPUT) {
+            ITestInput input = (ITestInput)action;
+            mInputs = (E[]) input.onInput();
+            mLaseResults = mInputs;
+            return true;
+        }
+        E[] testData = null;
         switch (actionType) {
-            case INPUT: {
-                ITestInput input = (ITestInput)action;
-                mInputs = input.onInput();
-                mLaseResults = mInputs;
-                return true;
-            }
             case NORMAL: {
-                ITestCase testCase = (ITestCase)action;
-                tests = testCase.test();
-                expects = testCase.expect();
+                println("Normal Test:");
+                testData = mInputs;
                 break;
             }
             case CONTINUE: {
-                ITestCase testCase = (ITestCase)action;
-                tests = testCase.test();
-                expects = testCase.expect();
+                println("Continue Test:");
+                testData = mLaseResults;
                 break;
             }
         }
-        return startTest(action.actionType, tests, expects);
+        ITestCase testCase = (ITestCase)action;
+        printTestData(testData);
+        E[] tests = (E[]) testCase.test(testData);
+        E[] expects = (E[]) testCase.expect(mInputs);
+        mLaseResults = expects;
+        return evaluate(tests, expects);
     }
 
-    private boolean startTest(ActionType actionType, Comparable[] tests, Comparable[] expects) {
-        println2("[TEST" + ++mTestNumber + "]"  + actionType + " Test ----->");
-        Comparable[] testData = null;
-        if (actionType == ActionType.NORMAL) {
-            testData = mInputs;
-        } else if (actionType == ActionType.CONTINUE) {
-            testData = mLaseResults;
-            mLaseResults = expects;
+    @SuppressWarnings("unchecked")
+    private boolean evaluate(Comparable[] tests, Comparable[] expects) {
+        if (tests == null && expects == null) {
+            return true;
         }
-        printTestData(testData);
-
-        for (Comparable data : testData) {
-            
+        if (tests == null || expects == null) {
+            return false;
         }
-        return false;
+        if (tests.length != expects.length) {
+            return false;
+        }
+        for (int i = 0; i < expects.length; i++) {
+            if (expects[i].compareTo(tests[i]) != 0) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private void printTestData(Comparable[] testData) {
@@ -151,8 +151,8 @@ public class HeavensTest {
     }
 
     public interface ITestCase<E extends Comparable<E>> extends IAction {
-        E[] test();
-        E[] expect();
+        E[] test(E[] testData);
+        E[] expect(E[] testData);
     }
 
     private interface IAction {
