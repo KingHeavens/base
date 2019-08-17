@@ -57,7 +57,7 @@ public class HeavensTest<E extends Comparable<E>> {
 
     public boolean test(int testCount) {
         for (int i = 0; i < testCount; i ++) {
-            println2("=========== Start Test Number of Times:" + (i + 1) + " ===========");
+            println("=========== Start Test Number of Times:" + (i + 1) + " =========================");
             for (TestAction action : mActions) {
                 if (!testAction(action)) {
                     println2("=========== End Test Number of Times:" + (i + 1) + " [Result:FAILED] ===========");
@@ -72,13 +72,16 @@ public class HeavensTest<E extends Comparable<E>> {
     @SuppressWarnings("unchecked")
     private boolean testAction(TestAction action) {
         ActionType actionType = action.actionType;
+
         if (actionType == ActionType.INPUT) {
-            ITestInput input = (ITestInput)action;
-            mInputs = (E[]) input.onInput();
+            ITestInput<E> input = (ITestInput<E>) action.action;
+            mInputs = input.onInput();
             mLaseResults = mInputs;
             return true;
         }
+
         E[] testData = null;
+
         switch (actionType) {
             case NORMAL: {
                 println("Normal Test:");
@@ -91,10 +94,16 @@ public class HeavensTest<E extends Comparable<E>> {
                 break;
             }
         }
-        ITestCase testCase = (ITestCase)action;
+
+        ITestCase testCase = (ITestCase)action.action;
         printTestData(testData);
+
         E[] tests = (E[]) testCase.test(testData);
+        printResultData(tests);
+
         E[] expects = (E[]) testCase.expect(mInputs);
+        printExceptData(tests);
+
         mLaseResults = expects;
         return evaluate(tests, expects);
     }
@@ -118,8 +127,21 @@ public class HeavensTest<E extends Comparable<E>> {
         return true;
     }
 
-    private void printTestData(Comparable[] testData) {
-        StringBuilder stringBuilder = new StringBuilder("Test Data:\n");
+
+    private void printTestData(E[] testData) {
+        printTestTypeData("TestData", testData);
+    }
+
+    private void printResultData(E[] testData) {
+        printTestTypeData("ResultData", testData);
+    }
+
+    private void printExceptData(E[] testData) {
+        printTestTypeData("ExceptData", testData);
+    }
+
+    private void printTestTypeData(String type, E[] testData) {
+        StringBuilder stringBuilder = new StringBuilder(String.format("%s:\n", type));
         stringBuilder.append("[");
         if (testData == null) {
             stringBuilder.append("no test data");

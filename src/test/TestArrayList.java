@@ -1,5 +1,9 @@
 package test;
 
+import ds.ArrayList;
+
+import java.util.Collections;
+
 /**
  * 测试线性表
  *
@@ -10,28 +14,37 @@ package test;
 public class TestArrayList {
 
     public static void main(String[] args) {
-
+        testCase1();
     }
 
-    @SuppressWarnings("unchecked")
     private static void testCase1() {
         HeavensTest<Integer> heavensTest = new HeavensTest<>();
-        heavensTest.input(new HeavensTest.ITestInput<Integer>() {
-            @Override
-            public Integer[] onInput() {
-                return new Integer[0];
-            }
-        });
-        heavensTest.addTestCase(new HeavensTest.ITestCase() {
+        heavensTest.input(TestGenerator::generateRandomArray);
+        heavensTest.addTestCase(new HeavensTest.ITestCase<Integer>() {
                     @Override
-                    public Comparable[] test(Comparable[] testData) {
-                        return new Comparable[0];
+                    public Integer[] test(Integer[] testData) {
+                        ArrayList<Integer> list = new ArrayList<>();
+                        for (Integer aTestData : testData) {
+                            list.addLast(aTestData);
+                        }
+                        Integer[] results = new Integer[list.getSize()];
+                        for (int i = 0; i < list.getSize(); i ++) {
+                            results[i] = list.get(i);
+                        }
+                        return results;
                     }
 
                     @Override
-                    public Comparable[] expect(Comparable[] testData) {
-                        return new Comparable[0];
+                    public Integer[] expect(Integer[] testData) {
+                        java.util.ArrayList<Integer> list = new java.util.ArrayList<>();
+                        Collections.addAll(list, testData);
+                        Integer[] results = new Integer[list.size()];
+                        for (int i = 0; i < list.size(); i ++) {
+                            results[i] = list.get(i);
+                        }
+                        return results;
                     }
                 });
+        heavensTest.test(10);
     }
 }

@@ -11,33 +11,33 @@ import java.util.Random;
  **/
 public class TestGenerator {
 
-    public static int[] generateRandomArray() {
+    public static Integer[] generateRandomArray() {
         return generateRandomArray(0, 5, 10);
     }
 
-    public static int[] generateRandomArray(int from, int to, int count) {
-        int[] intArr = new int[count];
+    public static Integer[] generateRandomArray(int from, int to, int count) {
+        Integer[] intArr = new Integer[count];
         for (int i = 0; i < count; i ++) {
             intArr[i] = generateInt(from, to);
         }
         return intArr;
     }
 
-    public static int[] generateRandomArray(int from, int to, int fromCount, int toCount) {
+    public static Integer[] generateRandomArray(int from, int to, int fromCount, int toCount) {
         int realCount = generateInt(fromCount, toCount);
-        int[] intArr = new int[realCount];
+        Integer[] intArr = new Integer[realCount];
         for (int i = 0; i < realCount; i ++) {
             intArr[i] = generateInt(from, to);
         }
         return intArr;
     }
 
-    public static int generateInt() {
+    public static Integer generateInt() {
         Random random = new Random();
         return random.nextInt();
     }
 
-    public static int generateInt(int from, int to) {
+    public static Integer generateInt(int from, int to) {
         Random random = new Random();
         return from + random.nextInt(to);
     }
