@@ -1,5 +1,7 @@
 package test;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,17 +58,36 @@ public class HeavensTest<E extends Comparable<E>> {
     }
 
     public boolean test(int testCount) {
+        boolean accept = false;
+        int realTestCount = 1;
+        long allTestTime = System.nanoTime();
+        long testTime;
         for (int i = 0; i < testCount; i ++) {
-            println("=========== Start Test Number of Times:" + (i + 1) + " =========================");
+            println("=========== Start Test:【" + realTestCount + "】 =========================");
+            testTime = System.nanoTime();
             for (TestAction action : mActions) {
                 if (!testAction(action)) {
-                    println2("=========== End Test Number of Times:" + (i + 1) + " [Result:FAILED] ===========");
-                    return false;
+                    println("Test 【" + realTestCount + "】 cost " + getTestTime(testTime) + "s");
+                    println2("=========== End Test:【" + realTestCount + "】 [Result:FAILED] ===========");
+                    break;
                 }
             }
-            println2("=========== End Test Number of Times:" + (i + 1) + " [Result:ACCEPT] ===========");
+            println("Test 【" + realTestCount + "】 + cost " + getTestTime(testTime) + "s");
+            println2("=========== End Test:【" + realTestCount + "】 [Result:ACCEPT] ===========");
+            realTestCount ++;
+            if (i == testCount - 1) {
+                accept = true;
+            }
         }
-        return true;
+        println("Test total cost " + getTestTime(allTestTime) + "s");
+        println("Test " + testCount + " times, Test Result:" + (accept ? "【Accept】" : "【FAILED】"));
+        return accept;
+    }
+
+    private String getTestTime(long testTime) {
+        BigDecimal number = new BigDecimal((System.nanoTime() - testTime) + "");
+        BigDecimal divide = number.divide(new BigDecimal("1000000000"), 18, RoundingMode.HALF_UP);
+        return divide.toString();
     }
 
     @SuppressWarnings("unchecked")
