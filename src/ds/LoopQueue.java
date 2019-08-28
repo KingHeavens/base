@@ -8,6 +8,8 @@ import ds.protocol.IQueue;
  *     数组结构实现的队列，包含一个头指针{@code front}和一个尾指针{@code tail}
  *     当{@code front == tail}时，队列为空
  *     当{@code (front + 1) % size == tail}时，队列满
+ *     队列尾进头出
+ *
  * </p>
  *
  * @author J.Heavens

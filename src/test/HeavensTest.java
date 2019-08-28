@@ -24,7 +24,7 @@ public class HeavensTest<E extends Comparable<E>> {
         mActions = new ArrayList<>();
     }
 
-    public HeavensTest input(ITestInput<E> input) {
+    public void input(ITestInput<E> input) {
         if (input == null) {
             throw new RuntimeException("ITestInput can not be null!");
         }
@@ -32,48 +32,49 @@ public class HeavensTest<E extends Comparable<E>> {
         testAction.actionType = ActionType.INPUT;
         testAction.action = input;
         mActions.add(testAction);
-        return this;
     }
 
-    public HeavensTest addTestCase(ITestCase<E> operation) {
+    private void getHeavensTest(ITestCase<E> operation, ActionType type, String... testDesc) {
         if (operation == null) {
             throw new RuntimeException("ITestCase can not be null!");
         }
         TestAction testAction = new TestAction();
-        testAction.actionType = ActionType.NORMAL;
+        testAction.actionType = type;
         testAction.action = operation;
+        if (testDesc.length > 0) {
+            testAction.testDesc = testDesc[0];
+        }
         mActions.add(testAction);
-        return this;
     }
 
-    public HeavensTest continueWith(ITestCase<E> operation) {
-        if (operation == null) {
-            throw new RuntimeException("ITestCase can not be null!");
-        }
-        TestAction testAction = new TestAction();
-        testAction.actionType = ActionType.CONTINUE;
-        testAction.action = operation;
-        mActions.add(testAction);
-        return this;
+    public void addTestCase(ITestCase<E> operation, String... testDesc) {
+        getHeavensTest(operation, ActionType.NORMAL, testDesc);
+    }
+
+    public void continueWith(ITestCase<E> operation, String... testDesc) {
+        getHeavensTest(operation, ActionType.CONTINUE, testDesc);
     }
 
     public boolean test(int testCount) {
+        if (testCount <= 0) {
+            testCount = 1;
+        }
         boolean accept = false;
         int realTestCount = 1;
         long allTestTime = System.nanoTime();
-        long testTime;
+        long startTime;
         for (int i = 0; i < testCount; i ++) {
-            println("=========== Start Test:【" + realTestCount + "】 =========================");
-            testTime = System.nanoTime();
+            println("=========== Start Test:[" + realTestCount + "] =========================");
+            startTime = System.nanoTime();
             for (TestAction action : mActions) {
                 if (!testAction(action)) {
-                    println("Test 【" + realTestCount + "】 cost " + getTestTime(testTime) + "s");
-                    println2("=========== End Test:【" + realTestCount + "】 [Result:FAILED] ===========");
+                    println("Test [" + realTestCount + "] cost " + getTestTime(startTime) + "s");
+                    println2("=========== End Test: [" + realTestCount + "]:【FAILED】 ===========");
                     break;
                 }
             }
-            println("Test 【" + realTestCount + "】 + cost " + getTestTime(testTime) + "s");
-            println2("=========== End Test:【" + realTestCount + "】 [Result:ACCEPT] ===========");
+            println("Test [" + realTestCount + "] cost " + getTestTime(startTime) + "s");
+            println2("=========== End Test: [" + realTestCount + "]:【ACCEPT】 ===========");
             realTestCount ++;
             if (i == testCount - 1) {
                 accept = true;
@@ -86,7 +87,7 @@ public class HeavensTest<E extends Comparable<E>> {
 
     private String getTestTime(long testTime) {
         BigDecimal number = new BigDecimal((System.nanoTime() - testTime) + "");
-        BigDecimal divide = number.divide(new BigDecimal("1000000000"), 18, RoundingMode.HALF_UP);
+        BigDecimal divide = number.divide(new BigDecimal("1000000000"), 10, RoundingMode.HALF_UP);
         return divide.toString();
     }
 
@@ -105,25 +106,28 @@ public class HeavensTest<E extends Comparable<E>> {
 
         switch (actionType) {
             case NORMAL: {
-                println("Normal Test:");
+                println("Normal Test:" + action.testDesc);
                 testData = mInputs;
                 break;
             }
             case CONTINUE: {
-                println("Continue Test:");
+                println("Continue Test:" + action.testDesc);
                 testData = mLaseResults;
                 break;
             }
         }
 
+        long testStartTime = System.nanoTime();
         ITestCase testCase = (ITestCase)action.action;
-        printTestData(testData);
+        printTestData(testData, getTestTime(testStartTime));
 
+        testStartTime = System.nanoTime();
         E[] tests = (E[]) testCase.test(testData);
-        printResultData(tests);
+        printResultData(tests, getTestTime(testStartTime));
 
+        testStartTime = System.nanoTime();
         E[] expects = (E[]) testCase.expect(mInputs);
-        printExceptData(tests);
+        printExceptData(tests, getTestTime(testStartTime));
 
         mLaseResults = expects;
         return evaluate(tests, expects);
@@ -149,20 +153,20 @@ public class HeavensTest<E extends Comparable<E>> {
     }
 
 
-    private void printTestData(E[] testData) {
-        printTestTypeData("TestData", testData);
+    private void printTestData(E[] testData, String costTime) {
+        printTestTypeData("△△△---TEST-INPUT----→ ", testData, costTime);
     }
 
-    private void printResultData(E[] testData) {
-        printTestTypeData("ResultData", testData);
+    private void printResultData(E[] testData, String costTime) {
+        printTestTypeData("☆☆☆---TEST-RESULT----→ ", testData, costTime);
     }
 
-    private void printExceptData(E[] testData) {
-        printTestTypeData("ExceptData", testData);
+    private void printExceptData(E[] testData, String costTime) {
+        printTestTypeData("★★★---TEST-EXCEPT----→ ", testData, costTime);
     }
 
-    private void printTestTypeData(String type, E[] testData) {
-        StringBuilder stringBuilder = new StringBuilder(String.format("%s:\n", type));
+    private void printTestTypeData(String type, E[] testData, String costTime) {
+        StringBuilder stringBuilder = new StringBuilder(String.format("%s cost %ss\n", type, costTime));
         stringBuilder.append("[");
         if (testData == null) {
             stringBuilder.append("no test data");
@@ -187,6 +191,7 @@ public class HeavensTest<E extends Comparable<E>> {
     private class TestAction {
         private ActionType actionType;
         private IAction action;
+        private String testDesc = "";
     }
 
     public interface ITestInput<E extends Comparable<E>> extends IAction {
