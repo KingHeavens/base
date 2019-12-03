@@ -87,7 +87,7 @@ public class HeavensTest<E extends Comparable<E>> {
 
     private String getTestTime(long testTime) {
         BigDecimal number = new BigDecimal((System.nanoTime() - testTime) + "");
-        BigDecimal divide = number.divide(new BigDecimal("1000000000"), 10, RoundingMode.HALF_UP);
+        BigDecimal divide = number.divide(new BigDecimal("1000000000"), 6, RoundingMode.HALF_UP);
         return divide.toString();
     }
 
@@ -126,8 +126,8 @@ public class HeavensTest<E extends Comparable<E>> {
         printResultData(tests, getTestTime(testStartTime));
 
         testStartTime = System.nanoTime();
-        E[] expects = (E[]) testCase.expect(mInputs);
-        printExceptData(tests, getTestTime(testStartTime));
+        E[] expects = (E[]) testCase.expect(testData);
+        printExceptData(expects, getTestTime(testStartTime));
 
         mLaseResults = expects;
         return evaluate(tests, expects);

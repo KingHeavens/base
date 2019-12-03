@@ -1,5 +1,8 @@
 package test;
 
+
+import java.util.Iterator;
+
 /**
  * 打印类
  *
@@ -24,5 +27,18 @@ public class Printer {
 
     public static void print(String log) {
         System.out.print(log);
+    }
+
+    public static void printIterator(Iterable iterable) {
+        if (iterable == null) {
+            return;
+        }
+        Iterator iterator = iterable.iterator();
+        StringBuilder stringBuilder = new StringBuilder();
+        while (iterator.hasNext()) {
+            Object next = iterator.next();
+            stringBuilder.append(next.toString()).append(",");
+        }
+        System.out.println(stringBuilder.toString());
     }
 }

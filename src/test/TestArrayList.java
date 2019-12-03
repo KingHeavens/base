@@ -20,12 +20,7 @@ public class TestArrayList {
 
     private static void testCase1() {
         HeavensTest<Integer> heavensTest = new HeavensTest<>();
-        heavensTest.input(new HeavensTest.ITestInput<Integer>() {
-            @Override
-            public Integer[] onInput() {
-                return TestGenerator.generateRandomArray(-100, 100, 5, 20);
-            }
-        });
+        heavensTest.input(() -> TestGenerator.generateRandomArray(-100, 100, 5, 20));
         heavensTest.addTestCase(new HeavensTest.ITestCase<Integer>() {
                     @Override
                     public Integer[] test(Integer[] testData) {
