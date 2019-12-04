@@ -53,9 +53,9 @@ public class BubbleSort {
                 break;
             }
             sorted = true;
-            for (int j = i; j < n - 1; j++) {
-                if (arr[j] > arr[j + 1]) {
-                    swap(arr, j, j + 1);
+            for (int j = n - 1; j > 0; j--) {
+                if (arr[j] < arr[j - 1]) {
+                    swap(arr, j, j - 1);
                     sorted = false;
                 }
             }
@@ -72,10 +72,19 @@ public class BubbleSort {
         //test1();
         //test2();
         test3();
+        /*int[] test = new int[] {
+          6,5,4,3,2,1
+        };
+        new BubbleSort().bubbleSort3(test, test.length);
+        List<Integer> list = new ArrayList<>();
+        for (int i : test) {
+            list.add(i);
+        }
+        Printer.printIterator(list);*/
     }
 
     private static void test1() {
-        HeavensTest<Integer> integerHeavensTest = new HeavensTest<>();
+        HeavensTest<Integer> integerHeavensTest = new HeavensTest<>(Integer.class);
         integerHeavensTest.input(() -> TestGenerator.generateRandomArray(-1000, 1000, 1000));
         integerHeavensTest.addTestCase(new HeavensTest.ITestCase<Integer>() {
             @Override
@@ -104,7 +113,7 @@ public class BubbleSort {
     }
 
     private static void test2() {
-        HeavensTest<Integer> integerHeavensTest = new HeavensTest<>();
+        HeavensTest<Integer> integerHeavensTest = new HeavensTest<>(Integer.class);
         integerHeavensTest.input(() -> TestGenerator.generateRandomArray(-1000, 1000, 1000));
         integerHeavensTest.addTestCase(new HeavensTest.ITestCase<Integer>() {
             @Override
@@ -133,8 +142,8 @@ public class BubbleSort {
     }
 
     private static void test3() {
-        HeavensTest<Integer> integerHeavensTest = new HeavensTest<>();
-        integerHeavensTest.input(() -> TestGenerator.generateRandomArray(-1000, 1000, 1000));
+        HeavensTest<Integer> integerHeavensTest = new HeavensTest<>(Integer.class);
+        integerHeavensTest.input(() -> TestGenerator.generateRandomArray(-100, 100, 10));
         integerHeavensTest.addTestCase(new HeavensTest.ITestCase<Integer>() {
             @Override
             public Integer[] test(Integer[] testData) {
@@ -158,6 +167,6 @@ public class BubbleSort {
                 return testList.toArray(testData);
             }
         });
-        integerHeavensTest.test(10);
+        integerHeavensTest.test(1);
     }
 }

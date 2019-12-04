@@ -19,7 +19,7 @@ public class TestArrayList {
     }
 
     private static void testCase1() {
-        HeavensTest<Integer> heavensTest = new HeavensTest<>();
+        HeavensTest<Integer> heavensTest = new HeavensTest<>(Integer.class);
         heavensTest.input(() -> TestGenerator.generateRandomArray(-100, 100, 5, 20));
         heavensTest.addTestCase(new HeavensTest.ITestCase<Integer>() {
                     @Override

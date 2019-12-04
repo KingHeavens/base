@@ -1,5 +1,6 @@
 package test;
 
+import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -16,12 +17,14 @@ import static test.Printer.println2;
  * @since create at 2019/8/6
  **/
 public class HeavensTest<E extends Comparable<E>> {
+    private final Class<E> mType;
     private List<TestAction> mActions;
     private E[] mInputs;
     private E[] mLaseResults;
 
-    public HeavensTest() {
+    public HeavensTest(Class<E> type) {
         mActions = new ArrayList<>();
+        mType = type;
     }
 
     public void input(ITestInput<E> input) {
@@ -59,7 +62,7 @@ public class HeavensTest<E extends Comparable<E>> {
         if (testCount <= 0) {
             testCount = 1;
         }
-        boolean accept = false;
+        boolean accept = true;
         int realTestCount = 1;
         long allTestTime = System.nanoTime();
         long startTime;
@@ -67,18 +70,23 @@ public class HeavensTest<E extends Comparable<E>> {
             println("=========== Start Test:[" + realTestCount + "] =========================");
             startTime = System.nanoTime();
             for (TestAction action : mActions) {
+                ActionType actionType = action.actionType;
+
+                if (actionType == ActionType.INPUT) {
+                    ITestInput<E> input = (ITestInput<E>) action.action;
+                    mInputs = input.onInput();
+                    mLaseResults = mInputs;
+                    continue;
+                }
+
                 if (!testAction(action)) {
-                    println("Test [" + realTestCount + "] cost " + getTestTime(startTime) + "s");
-                    println2("=========== End Test: [" + realTestCount + "]:【FAILED】 ===========");
+                    accept = false;
                     break;
                 }
             }
             println("Test [" + realTestCount + "] cost " + getTestTime(startTime) + "s");
-            println2("=========== End Test: [" + realTestCount + "]:【ACCEPT】 ===========");
+            println2("=========== End Test: [" + realTestCount + "]:" + (accept ? "【ACCEPT】" : "【FAILED】") + " ===========");
             realTestCount ++;
-            if (i == testCount - 1) {
-                accept = true;
-            }
         }
         println("Test total cost " + getTestTime(allTestTime) + "s");
         println("Test " + testCount + " times, Test Result:" + (accept ? "【Accept】" : "【FAILED】"));
@@ -94,13 +102,6 @@ public class HeavensTest<E extends Comparable<E>> {
     @SuppressWarnings("unchecked")
     private boolean testAction(TestAction action) {
         ActionType actionType = action.actionType;
-
-        if (actionType == ActionType.INPUT) {
-            ITestInput<E> input = (ITestInput<E>) action.action;
-            mInputs = input.onInput();
-            mLaseResults = mInputs;
-            return true;
-        }
 
         E[] testData = null;
 
@@ -121,12 +122,21 @@ public class HeavensTest<E extends Comparable<E>> {
         ITestCase testCase = (ITestCase)action.action;
         printTestData(testData, getTestTime(testStartTime));
 
+        int testDataLength = testData == null ? 0 : testData.length;
+        E[] testDataClone = (E[]) Array.newInstance(mType, testDataLength);
+        if (testData != null) {
+            System.arraycopy(testData, 0, testDataClone, 0, testDataLength);
+        }
         testStartTime = System.nanoTime();
-        E[] tests = (E[]) testCase.test(testData);
+        E[] tests = (E[]) testCase.test(testDataClone);
         printResultData(tests, getTestTime(testStartTime));
 
+        E[] testDataClone2 = (E[]) Array.newInstance(mType, testDataLength);
+        if (testData != null) {
+            System.arraycopy(testData, 0, testDataClone2, 0, testDataLength);
+        }
         testStartTime = System.nanoTime();
-        E[] expects = (E[]) testCase.expect(testData);
+        E[] expects = (E[]) testCase.expect(testDataClone2);
         printExceptData(expects, getTestTime(testStartTime));
 
         mLaseResults = expects;
