@@ -16,6 +16,9 @@ import java.util.List;
  **/
 public class BubbleSort {
     public void bubbleSort1(int[] arr, int n) {
+        if (arr == null || n < 2) {
+            return;
+        }
         boolean sorted = false;
         while(!sorted) {
             sorted = true;
@@ -30,6 +33,9 @@ public class BubbleSort {
     }
 
     public void bubbleSort2(int[] arr, int n) {
+        if (arr == null || n < 2) {
+            return;
+        }
         boolean sorted = false;
         while(!sorted) {
             sorted = true;
@@ -53,7 +59,7 @@ public class BubbleSort {
                 break;
             }
             sorted = true;
-            for (int j = n - 1; j > 0; j--) {
+            for (int j = n - 1; j > i; j--) {
                 if (arr[j] < arr[j - 1]) {
                     swap(arr, j, j - 1);
                     sorted = false;
@@ -71,21 +77,13 @@ public class BubbleSort {
     public static void main(String[] args) {
         //test1();
         //test2();
-        test3();
-        /*int[] test = new int[] {
-          6,5,4,3,2,1
-        };
-        new BubbleSort().bubbleSort3(test, test.length);
-        List<Integer> list = new ArrayList<>();
-        for (int i : test) {
-            list.add(i);
-        }
-        Printer.printIterator(list);*/
+        //test3();
+        test4();
     }
 
     private static void test1() {
         HeavensTest<Integer> integerHeavensTest = new HeavensTest<>(Integer.class);
-        integerHeavensTest.input(() -> TestGenerator.generateRandomArray(-1000, 1000, 1000));
+        integerHeavensTest.input(() -> TestGenerator.generateRandomArray(-100000, 100000, 1000));
         integerHeavensTest.addTestCase(new HeavensTest.ITestCase<Integer>() {
             @Override
             public Integer[] test(Integer[] testData) {
@@ -103,10 +101,8 @@ public class BubbleSort {
 
             @Override
             public Integer[] expect(Integer[] testData) {
-                List<Integer> testList = Arrays.asList(testData);
-                Collections.sort(testList);
-
-                return testList.toArray(testData);
+                Arrays.sort(testData);
+                return testData;
             }
         });
         integerHeavensTest.test(10);
@@ -132,10 +128,8 @@ public class BubbleSort {
 
             @Override
             public Integer[] expect(Integer[] testData) {
-                List<Integer> testList = Arrays.asList(testData);
-                Collections.sort(testList);
-
-                return testList.toArray(testData);
+                Arrays.sort(testData);
+                return testData;
             }
         });
         integerHeavensTest.test(10);
@@ -143,7 +137,7 @@ public class BubbleSort {
 
     private static void test3() {
         HeavensTest<Integer> integerHeavensTest = new HeavensTest<>(Integer.class);
-        integerHeavensTest.input(() -> TestGenerator.generateRandomArray(-100, 100, 10));
+        integerHeavensTest.input(() -> TestGenerator.generateRandomArray(-10000, 10000, 100));
         integerHeavensTest.addTestCase(new HeavensTest.ITestCase<Integer>() {
             @Override
             public Integer[] test(Integer[] testData) {
@@ -161,12 +155,39 @@ public class BubbleSort {
 
             @Override
             public Integer[] expect(Integer[] testData) {
-                List<Integer> testList = Arrays.asList(testData);
-                Collections.sort(testList);
-
-                return testList.toArray(testData);
+                Arrays.sort(testData);
+                return testData;
             }
         });
-        integerHeavensTest.test(1);
+        integerHeavensTest.test(10);
+    }
+
+    private static void test4() {
+        HeavensTest<Integer> integerHeavensTest = new HeavensTest<>(Integer.class);
+        integerHeavensTest.input(() -> new Integer[] {
+                6,5,4,3,2,1
+        });
+        integerHeavensTest.addTestCase(new HeavensTest.ITestCase<Integer>() {
+            @Override
+            public Integer[] test(Integer[] testData) {
+                BubbleSort bubbleSort = new BubbleSort();
+                int[] testArray = new int[testData.length];
+                for (int i = 0; i < testArray.length; i++) {
+                    testArray[i] = testData[i];
+                }
+                bubbleSort.bubbleSort3(testArray, testArray.length);
+                for (int i = 0; i < testArray.length; i++) {
+                    testData[i] = testArray[i];
+                }
+                return testData;
+            }
+
+            @Override
+            public Integer[] expect(Integer[] testData) {
+                Arrays.sort(testData);
+                return testData;
+            }
+        });
+        integerHeavensTest.test(10);
     }
 }

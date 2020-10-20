@@ -17,7 +17,7 @@ public class TestGenerator {
 
     public static Integer[] generateRandomArray(int from, int to, int count) {
         Integer[] intArr = new Integer[count];
-        for (int i = 0; i < count; i ++) {
+        for (int i = 0; i < count; i++) {
             intArr[i] = generateInt(from, to);
         }
         return intArr;
@@ -26,7 +26,7 @@ public class TestGenerator {
     public static Integer[] generateRandomArray(int from, int to, int fromCount, int toCount) {
         int realCount = generateInt(fromCount, toCount);
         Integer[] intArr = new Integer[realCount];
-        for (int i = 0; i < realCount; i ++) {
+        for (int i = 0; i < realCount; i++) {
             intArr[i] = generateInt(from, to);
         }
         return intArr;
@@ -39,6 +39,6 @@ public class TestGenerator {
 
     public static Integer generateInt(int from, int to) {
         Random random = new Random();
-        return from + random.nextInt(to);
+        return random.nextInt((to - from) + 1) + from;
     }
 }

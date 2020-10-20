@@ -1,12 +1,16 @@
-import java.util.Stack;
+import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello World!");
-        Stack<Integer> stack = new Stack<>();
-        int[] arr = new int[]{2, 8, 9, 10, 11, 12};
-        int max = getMax(arr, 0, arr.length - 1);
-        show("max=" + max);
+//        System.out.println("Hello World!");
+//        Stack<Integer> stack = new Stack<>();
+//        int[] arr = new int[]{2, 8, 9, 10, 11, 12};
+//        int max = getMax(arr, 0, arr.length - 1);
+//        show("max=" + max);
+        ArrayList<Object> objects = new ArrayList<>();
+        while (true) {
+            objects.add(new Object());
+        }
     }
 
     private static int getMax(int[] arr, int i, int j) {
