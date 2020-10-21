@@ -1,7 +1,5 @@
 package algorithm;
 
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 
 /**
  *  递归时间复杂度分析
@@ -20,20 +18,19 @@ public class MergeSort {
     /**
      * 二分查找最大值
      *
-     * @param arr
-     * @param L
-     * @param R
-     * @return
+     * @param arr 数组
+     * @param L 数组左侧index
+     * @param R 数组右侧index
+     * @return 数组中最大值
      */
     public int getMax(int[] arr, int L, int R) {
-        if (arr == null) {
-            return Integer.MIN_VALUE;
+        if (arr == null || arr.length <= 0) {
+            throw new RuntimeException("arr is empty");
         }
         if (L == R) {
             return arr[L];
         }
-        int mid;
-        mid = L + ((R - L) >> 1);
+        int mid = L + ((R - L) >> 1);
         int maxL = getMax(arr, L, mid);
         int maxR = getMax(arr, mid + 1, R);
         return maxL > maxR ? maxL : maxR;
