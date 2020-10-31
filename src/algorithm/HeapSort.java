@@ -4,6 +4,7 @@ import test.HeavensTest;
 import test.TestGenerator;
 
 import java.util.Arrays;
+import java.util.PriorityQueue;
 
 /**
  * 堆排序
@@ -75,6 +76,56 @@ public class HeapSort {
         }
     }
 
+    /**
+     * 一个几乎有序的数组，每个元素最多移动K个位置就能保证数组有序，给数组排序
+     *
+     * O(Nlogk)
+     *
+     * 将数组前K个数放入小根堆中。然后不断从堆中取头部节点放入arr,数组有序
+     *
+     * @param arr
+     * @param k
+     */
+    public void sortDistanceKArray(int[] arr, int k) {
+        if (arr == null || arr.length < 2) {
+            return;
+        }
+        if (k >= arr.length) {
+            k = arr.length - 1;
+        }
+        PriorityQueue<Integer> heap = new PriorityQueue<>();
+        int index;//标记已入堆的位置
+        //提供K+1大小的堆才能保证最多移动K位
+        for (index = 0; index <= k; index++) {
+            heap.add(arr[index]);
+        }
+        int i = 0;//标识出堆放入数组的位置
+        while (index < arr.length) {
+            arr[i++] = heap.poll();
+            heap.add(arr[index++]);
+        }
+        while (!heap.isEmpty()) {
+            arr[i++] = heap.poll();
+        }
+    }
+
+    public void testArrDistanceLessK(int[] arr, int k) {
+        // 默认小根堆
+        PriorityQueue<Integer> heap = new PriorityQueue<>();
+        int index = 0;
+        for (; index <= Math.min(arr.length, k); index++) {
+            heap.add(arr[index]);
+        }
+        int i = 0;
+        for (; index < arr.length; i++, index++) {
+            heap.add(arr[index]);
+            arr[i] = heap.poll();
+        }
+        while (!heap.isEmpty()) {
+            arr[i++] = heap.poll();
+        }
+    }
+
     private void swap(int[] arr, int i ,int j) {
         int temp = arr[i];
         arr[i] = arr[j];
@@ -82,6 +133,48 @@ public class HeapSort {
     }
 
     public static void main(String[] args) {
+        //testHeapSort();
+        testDistanceKArray();
+    }
+
+    private static void testDistanceKArray() {
+        HeavensTest<Integer> integerHeavensTest = new HeavensTest<>(Integer.class);
+        integerHeavensTest.input(() -> new Integer[] {
+                2, 1, 5, 3, 6, 4
+        });
+        integerHeavensTest.addTestCase(new HeavensTest.ITestCase<Integer>() {
+            @Override
+            public Integer[] test(Integer[] testData) {
+                HeapSort heapSort = new HeapSort();
+                int[] testArray = new int[testData.length];
+                for (int i = 0; i < testArray.length; i++) {
+                    testArray[i] = testData[i];
+                }
+                heapSort.sortDistanceKArray(testArray, 7);
+                for (int i = 0; i < testArray.length; i++) {
+                    testData[i] = testArray[i];
+                }
+                return testData;
+            }
+
+            @Override
+            public Integer[] expect(Integer[] testData) {
+                HeapSort heapSort = new HeapSort();
+                int[] testArray = new int[testData.length];
+                for (int i = 0; i < testArray.length; i++) {
+                    testArray[i] = testData[i];
+                }
+                heapSort.testArrDistanceLessK(testArray, 2);
+                for (int i = 0; i < testArray.length; i++) {
+                    testData[i] = testArray[i];
+                }
+                return testData;
+            }
+        });
+        integerHeavensTest.test(10);
+    }
+
+    private static void testHeapSort() {
         HeavensTest<Integer> integerHeavensTest = new HeavensTest<>(Integer.class);
         integerHeavensTest.input(() -> TestGenerator.generateRandomArray(-10000, 10000, 100));
         integerHeavensTest.addTestCase(new HeavensTest.ITestCase<Integer>() {
