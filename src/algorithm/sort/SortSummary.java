@@ -1,4 +1,4 @@
-package algorithm;
+package algorithm.sort;
 
 /**
  * 排序算法        平均时间复杂度       最好       最坏      额外空间复杂度      稳定性     排序方式

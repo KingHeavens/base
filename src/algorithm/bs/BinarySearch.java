@@ -1,4 +1,4 @@
-package algorithm;
+package algorithm.bs;
 
 import test.Printer;
 

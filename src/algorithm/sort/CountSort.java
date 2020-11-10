@@ -1,7 +1,6 @@
-package algorithm;
+package algorithm.sort;
 
 import test.HeavensTest;
-import test.Printer;
 import test.TestGenerator;
 
 import java.util.Arrays;

@@ -1,4 +1,4 @@
-package algorithm;
+package algorithm.sort;
 
 import test.HeavensTest;
 import test.Printer;
