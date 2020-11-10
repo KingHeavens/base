@@ -14,6 +14,7 @@ import test.Printer;
  * @version 1.0
  * @since create at 2019/12/4
  **/
+@SuppressWarnings("ALL")
 public class XOR {
     /**
      * 数组中只有一个数出现了奇数次，其余都是偶数次，求这个出现奇数次的数?

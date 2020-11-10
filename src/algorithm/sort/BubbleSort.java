@@ -14,6 +14,7 @@ import java.util.Arrays;
  * @version 1.0
  * @since create at 2019/9/27
  **/
+@SuppressWarnings("WeakerAccess")
 public class BubbleSort {
     /**
      * 冒小泡的排序1

@@ -23,6 +23,7 @@ import java.util.Arrays;
  * <p>
  * 归并排序
  */
+@SuppressWarnings({"WeakerAccess", "ManualArrayCopy"})
 public class MergeSort {
 
     /**
