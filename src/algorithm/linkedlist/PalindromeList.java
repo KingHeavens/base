@@ -74,64 +74,76 @@ public class PalindromeList {
 
     /**
      * 将链表后半部分翻转，然后一个指针从头开始，一个指针从尾部开始依次比较看是否相等
+     * 额外控件复杂度O(1)
      *
+     * 额外4个指针节点，比较好理解。
      * @param head head
      * @return 是否回文字符串
      */
     public boolean isPalindromeList3(Node head) {
+        //0个或1个节点认为是回文字符串
         if (head == null || head.next == null) {
             return true;
         }
-        //快慢指针找中心点
-        Node fast = head;
-        Node slow = head;
-        while (fast.next != null && fast.next.next != null) {
-            slow = slow.next;
-            fast = fast.next.next;
+        //快慢指针寻找中间位置
+        Node left = head;//慢指针
+        Node right = head;//快指针
+        while (right.next != null && right.next.next != null) {
+            left = left.next;
+            right = right.next.next;
         }
-        Node tail = slow;//左边部分的尾部
-        Node cur = tail.next;//右边部分的头部
-        tail.next = null;//将链表分成两部分
+        right = left.next;//找到右边链表第一个节点
+        left.next = null;//中间位置往后断开
 
-        //翻转右边的链表
-        Node pre = null;
+        //翻转中间的链表
         Node next;
-        while (cur != null) {
-            next = cur.next;
-            cur.next = pre;
-            pre = cur;
-            cur = next;
+        Node pre = left;//指向中间节点
+        while (right != null) {
+            next = right.next;
+            right.next = pre;
+            pre = right;
+            right = next;
         }
 
-        //左右两边链表逐个比较元素是否相等
-        Node left = head;
-        cur = pre;
+        //比较左右两个链表是否相同
+        right = pre;
+        left = head;
         boolean res = true;
-        while (pre != null) {
-            if (pre.value != left.value) {
+        while (left != null) {
+            if (left.value != right.value) {
                 res = false;
                 break;
             }
-            pre = pre.next;
             left = left.next;
+            right = right.next;
         }
 
-        //将原来的链表复原
-        pre = null;
-        while (cur != null) {
-            next = cur.next;
-            cur.next = pre;
-            pre = cur;
-            cur = next;
+        //恢复原来的链表（翻转右边的链表）
+        right = pre.next;
+        pre.next = null;
+        while (right != null) {
+            next = right.next;
+            right.next = pre;
+            pre = right;
+            right = next;
         }
-
-        tail.next = pre;
         return res;
+    }
+
+
+    /**
+     * 比较精简的办法
+     * 额外空间复杂度 O(1)
+     * 3个指针节点
+     * @param head head
+     */
+    public void isPalindromeList4(Node head) {
+
     }
 
     public static void main(String[] args) {
         Integer[] arr = {
-            1, 2, 1, 1, 1, 2, 1
+            1, 2, 1, 1, 1, 1, 2, 1
         };
         Node head = LinkedTestHelper.arrayToLinkedList(arr);
         PalindromeList algorithm = new PalindromeList();
