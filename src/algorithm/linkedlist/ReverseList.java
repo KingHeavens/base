@@ -18,12 +18,19 @@ public class ReverseList {
      * @param head head
      */
     public Node reverseList(Node head) {
+        //head指向将要翻转的节点
+        //pre标识翻转后的链表的头节点
+        //next记录将要翻转的下一个节点
         Node next;
         Node pre = null;
         while (head != null) {
+            //先记录将要翻转节点的下一个节点
             next = head.next;
+            //当前节点指向翻转好的节点的头结点
             head.next = pre;
+            //更新翻转好的链表的头结点
             pre = head;
+            //更新将要翻转的节点为之前保存的节点
             head = next;
         }
         return pre;
