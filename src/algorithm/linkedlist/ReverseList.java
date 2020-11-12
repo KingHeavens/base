@@ -3,6 +3,7 @@ package algorithm.linkedlist;
 import algorithm.linkedlist.helper.LinkedTestHelper;
 import algorithm.linkedlist.node.DNode;
 import algorithm.linkedlist.node.Node;
+import test.Printer;
 
 /**
  * 翻转链表
@@ -54,22 +55,35 @@ public class ReverseList {
         return pre;
     }
 
+    public boolean isDesc(Node head) {
+        if (head == null) {
+            return false;
+        }
+        Node cur = head;
+        while (cur.next != null && cur.value == cur.next.value) {
+            cur = cur.next;
+        }
+        return cur.next != null && cur.value > cur.next.value;
+    }
+
     public static void main(String[] args) {
-        //testLink();
-        testDLink();
+        testLink();
+        //testDLink();
     }
 
     private static void testLink() {
         Integer[] arr = new Integer[] {
-            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+            2, 2, 1
         };
         Node node = LinkedTestHelper.arrayToLinkedList(arr);
         LinkedTestHelper.printLinkedList(node);
-
         ReverseList algorithm = new ReverseList();
+        Printer.println("isDesc:" + algorithm.isDesc(node));
+
         Node reverseList = algorithm.reverseList(node);
 
         LinkedTestHelper.printLinkedList(reverseList);
+        Printer.println("isDesc:" + algorithm.isDesc(reverseList));
     }
 
     private static void testDLink() {
