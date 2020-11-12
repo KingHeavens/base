@@ -1,5 +1,7 @@
 package algorithm.linkedlist;
 
+import algorithm.linkedlist.node.RNode;
+
 /**
  * 复制一个带随机指针的链表，随机指针指向本链表上任意节点。
  *
@@ -8,4 +10,11 @@ package algorithm.linkedlist;
  * @since create at 2020/11/10
  **/
 public class CopyRandomList {
+    public RNode copyRandomList(RNode head) {
+        return null;
+    }
+
+    public RNode copyRandomList2(RNode head) {
+        return null;
+    }
 }
