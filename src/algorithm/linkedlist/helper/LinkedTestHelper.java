@@ -5,8 +5,6 @@ import algorithm.linkedlist.node.Node;
 import algorithm.linkedlist.node.RNode;
 import test.Printer;
 
-import java.util.Currency;
-
 /**
  * 链表测试工具类
  *
@@ -30,7 +28,7 @@ public class LinkedTestHelper {
         return head;
     }
 
-    public static Integer[] LinkedListToArr(Node head) {
+    public static Integer[] linkedListToArr(Node head) {
         if (head == null) {
             return null;
         }
@@ -103,7 +101,7 @@ public class LinkedTestHelper {
         return head;
     }
 
-    public static Integer[] DLinkedListToArr(DNode head) {
+    public static Integer[] dLinkedListToArr(DNode head) {
         if (head == null) {
             return null;
         }
@@ -127,10 +125,21 @@ public class LinkedTestHelper {
             Printer.print("LinkedList[NULL]");
             return;
         }
+        Node loopNode = getLoopNode(head);
         Node cur = head;
         Printer.print("LinkedList:");
+        int loopNodeFlag = 1;
         while (cur != null) {
-            Printer.print(cur.value + "->");
+            if (loopNode == cur) {
+                if (loopNodeFlag-- > 0) {
+                    Printer.print("[↕↕ " + cur.value + "->");
+                } else {
+                    Printer.println(" ↕↕]");
+                    return;
+                }
+            } else {
+                Printer.print(cur.value + "->");
+            }
             cur = cur.next;
         }
         Printer.println("NULL:");
@@ -160,9 +169,103 @@ public class LinkedTestHelper {
         Printer.print("RLinkedList:");
         while (cur != null) {
             String randValue = cur.rand != null ? String.valueOf(cur.rand.value) : "NULL";
-            Printer.print("[R" + randValue  + "|" + cur.value + "]->");
+            Printer.print("[R" + randValue + "|" + cur.value + "]->");
             cur = cur.next;
         }
         Printer.println("NULL:");
+    }
+
+    private static Node getLoopNode(Node head) {
+        if (head == null || head.next == null || head.next.next == null) {
+            return null;
+        }
+        Node slow = head.next;
+        Node fast = head.next.next;
+        while (slow != fast) {
+            if (fast.next == null || fast.next.next == null) {
+                return null;
+            }
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        fast = head;
+        while (slow != fast) {
+            slow = slow.next;
+            fast = fast.next;
+        }
+        return fast;
+    }
+
+    //loopIndex start from 1
+    public static Node createLoopList(int count, int loopIndex) {
+        if (loopIndex > count) {
+            return null;
+        }
+        Node loopNode = new Node(loopIndex);
+        Node head = null;
+        Node cur = null;
+        for (int i = 1; i <= count; i++) {
+            if (i == loopIndex) {
+                if (head == null) {
+                    head = loopNode;
+                    cur = head;
+                } else {
+                    cur.next = loopNode;
+                    cur = cur.next;
+                }
+            } else {
+                if (head == null) {
+                    head = new Node(i);
+                    cur = head;
+                } else {
+                    cur.next = new Node(i);
+                    cur = cur.next;
+                }
+            }
+            if (i == count) {
+                cur.next = loopNode;
+                cur = cur.next;
+            }
+        }
+        return head;
+    }
+
+    public static Node createList(int count) {
+        if (count < 1) {
+            return null;
+        }
+        Node head = null;
+        Node cur = null;
+        for (int i = 1; i <= count; i++) {
+            Node node = new Node(i);
+            if (head == null) {
+                head = node;
+                cur = head;
+            } else {
+                cur.next = node;
+                cur = cur.next;
+            }
+        }
+        return head;
+    }
+
+    //intersectIndex 短的链表开始数相交的位置
+    public static Node[] createIntersectNoLoopList(int head1OutLength, int head2OutLength, int commomCount) {
+        Node head1 = null;
+        Node head2 = null;
+        return new Node[]{head1, head2};
+    }
+
+    //intersectIndex 短的链表开始数相交的位置
+    public static Node[] createIntersectLoopOutList(int head1Length, int head2Length, int loopIndex, int intersectIndex) {
+        Node head1 = null;
+        Node head2 = null;
+        return new Node[]{head1, head2};
+    }
+
+    public static Node[] createIntersectLoopInList(int head1Length, int head2Length, int loop1Index, int loop2Index) {
+        Node head1 = null;
+        Node head2 = null;
+        return new Node[]{head1, head2};
     }
 }
