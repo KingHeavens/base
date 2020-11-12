@@ -82,6 +82,39 @@ public class CopyRandomList {
         return result;
     }
 
+    public RNode copyRandomList3(RNode head) {
+        if (head == null) {
+            return null;
+        }
+        RNode cur = head;
+        RNode next;
+        while (cur != null) {
+            next = cur.next;
+            cur.next = new RNode(cur.value);
+            cur.next.next = next;
+            cur = next;
+        }
+
+        RNode curCopy;
+        cur = head;
+        while (cur != null) {
+            curCopy = cur.next;
+            curCopy.rand = cur.rand == null ? null : cur.rand.next; //主要判断null
+            cur = cur.next.next;
+        }
+
+        RNode res = head.next;
+        cur = head;
+        while (cur != null) {
+            next = cur.next.next;
+            curCopy = cur.next;
+            cur.next = next;
+            curCopy.next = next == null ? null : next.next;//主要判断null
+            cur = next;
+        }
+        return res;
+    }
+
     public static void main(String[] args) {
         Integer[][] arr = new Integer[][]{
                 {1, 10},
@@ -98,7 +131,7 @@ public class CopyRandomList {
         RNode head = LinkedTestHelper.arrayToRLinkedList(arr);
 
         CopyRandomList algorithm = new CopyRandomList();
-        RNode result = algorithm.copyRandomList2(head);
+        RNode result = algorithm.copyRandomList3(head);
 
         Printer.println("head:" + head);
         LinkedTestHelper.printRandomList(head);
