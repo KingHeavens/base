@@ -195,35 +195,35 @@ public class IntersectNode {
     }
 
     private static void test4() {
-        Node[] heads = LinkedTestHelper.createIntersectNoLoopList(10, 5, 2);
+        Node[] heads = LinkedTestHelper.createIntersectNoLoopList(10, 5, 5);
         LinkedTestHelper.printLinkedList(heads[0]);
         LinkedTestHelper.printLinkedList(heads[1]);
 
         IntersectNode intersectNode = new IntersectNode();
         Node result = intersectNode.getIntersectNode(heads[0], heads[1]);
-        Printer.println("两条无环相交：IntersectNode:" + result);
+        Printer.println("两条无环相交：IntersectNode:" + result.value);
         Printer.println();
     }
 
     private static void test5() {
-        Node[] heads = LinkedTestHelper.createIntersectLoopOutList(10, 5, 3,2);
+        Node[] heads = LinkedTestHelper.createIntersectLoopOutList(6, 2, 3,10);
         LinkedTestHelper.printLinkedList(heads[0]);
         LinkedTestHelper.printLinkedList(heads[1]);
 
         IntersectNode intersectNode = new IntersectNode();
         Node result = intersectNode.getIntersectNode(heads[0], heads[1]);
-        Printer.println("两条有环环外相交：IntersectNode:" + result);
+        Printer.println("两条有环环外相交：IntersectNode:" + result.value);
         Printer.println();
     }
 
     private static void test6() {
-        Node[] heads = LinkedTestHelper.createIntersectLoopInList(10, 5);
+        Node[] heads = LinkedTestHelper.createIntersectLoopInList(10, 5, 6);
         LinkedTestHelper.printLinkedList(heads[0]);
         LinkedTestHelper.printLinkedList(heads[1]);
 
         IntersectNode intersectNode = new IntersectNode();
         Node result = intersectNode.getIntersectNode(heads[0], heads[1]);
-        Printer.println("两条有环环内相交：IntersectNode:" + result);
+        Printer.println("两条有环环内相交：IntersectNode:" + result.value);
         Printer.println();
     }
 }

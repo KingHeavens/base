@@ -250,22 +250,201 @@ public class LinkedTestHelper {
     }
 
     //intersectIndex 短的链表开始数相交的位置
-    public static Node[] createIntersectNoLoopList(int head1OutLength, int head2OutLength, int commomCount) {
+
+    /**
+     * 相交节点 0
+     *
+     * @param head1OutLength 链表一非公共部分个数 1
+     * @param head2OutLength 链表二非公共部分个数 20
+     * @param commonCount 公共部分节点个数 300
+     * @return head1 head2
+     */
+    public static Node[] createIntersectNoLoopList(int head1OutLength, int head2OutLength, int commonCount) {
         Node head1 = null;
         Node head2 = null;
+
+        Node head1Out = null;
+        int i;
+        for (i = 0; i < head1OutLength; i++) {
+            if (head1Out == null) {
+                head1Out = new Node(i + 1);
+                head1 = head1Out;
+            } else {
+                head1Out.next = new Node(i + 1);
+                head1Out = head1Out.next;
+            }
+        }
+        Node head2Out = null;
+        for (i = 0; i < head2OutLength; i++) {
+            if (head2Out == null) {
+                head2Out = new Node(i + 20);
+                head2 = head2Out;
+            } else {
+                head2Out.next = new Node(i + 20);
+                head2Out = head2Out.next;
+            }
+        }
+
+        Node intersect = null;
+        Node commonNode = null;
+        for (i = 1; i < commonCount; i++) {
+            if (commonNode == null) {
+                commonNode = new Node(0);
+                intersect = commonNode;
+            } else {
+                commonNode.next = new Node(i + 300);
+                commonNode = commonNode.next;
+            }
+        }
+
+        if (head1Out != null) {
+            head1Out.next = intersect;
+        }
+        if (head2Out != null) {
+            head2Out.next = intersect;
+        }
         return new Node[]{head1, head2};
     }
 
     //intersectIndex 短的链表开始数相交的位置
-    public static Node[] createIntersectLoopOutList(int head1Length, int head2Length, int loopIndex, int intersectIndex) {
+
+    /**
+     * 相交节点 0
+     *
+     * @param loopLength 环的长度， 1000
+     * @param head1OutLength  链表一非公共部分个数 1
+     * @param head2OutLength  链表二非公共部分个数 20
+     * @param outLoopCommonLength 环外公共部分节点个数 300
+     * @return head1 head2
+     */
+    public static Node[] createIntersectLoopOutList(int loopLength, int head1OutLength, int head2OutLength, int outLoopCommonLength) {
         Node head1 = null;
         Node head2 = null;
+
+        Node head1Out = null;
+        int i;
+        for (i = 0; i < head1OutLength; i++) {
+            if (head1Out == null) {
+                head1Out = new Node(i + 1);
+                head1 = head1Out;
+            } else {
+                head1Out.next = new Node(i + 1);
+                head1Out = head1Out.next;
+            }
+        }
+        Node head2Out = null;
+        for (i = 0; i < head2OutLength; i++) {
+            if (head2Out == null) {
+                head2Out = new Node(i + 20);
+                head2 = head2Out;
+            } else {
+                head2Out.next = new Node(i + 20);
+                head2Out = head2Out.next;
+            }
+        }
+
+        Node intersect = null;
+        Node commonNode = null;
+        for (i = 1; i <= outLoopCommonLength; i++) {
+            if (commonNode == null) {
+                commonNode = new Node(0);
+                intersect = commonNode;
+            } else {
+                commonNode.next = new Node(i + 300);
+                commonNode = commonNode.next;
+            }
+        }
+
+        if (head1Out != null) {
+            head1Out.next = intersect;
+        }
+        if (head2Out != null) {
+            head2Out.next = intersect;
+        }
+
+        Node loopNode = new Node(1000);
+        if (commonNode != null) {
+            commonNode.next = loopNode;
+        }
+
+        loopNode.next = loopNode;
+        Node tailNode = loopNode;
+        for (i = 1; i < loopLength; i++) {
+            Node node = new Node(1000 + i);
+            node.next = tailNode;
+            loopNode.next = node;
+            loopNode = loopNode.next;
+        }
+
         return new Node[]{head1, head2};
     }
 
-    public static Node[] createIntersectLoopInList(int head1Length, int head2Length, int loop1Index, int loop2Index) {
+    /**
+     * loop1 0
+     * loop2 1
+     *
+     * @param loopLength 环的长度 1000
+     * @param head1OutLength 链表一非公共部分长度 1
+     * @param head2OutLength 链表二非公共部分长度 20
+     * @return head1 head2
+     */
+    public static Node[] createIntersectLoopInList(int loopLength, int head1OutLength, int head2OutLength) {
         Node head1 = null;
         Node head2 = null;
+
+        Node head1Out = null;
+        int i;
+        for (i = 0; i < head1OutLength; i++) {
+            if (head1Out == null) {
+                head1Out = new Node(i + 1);
+                head1 = head1Out;
+            } else {
+                head1Out.next = new Node(i + 1);
+                head1Out = head1Out.next;
+            }
+        }
+        Node head2Out = null;
+        for (i = 0; i < head2OutLength; i++) {
+            if (head2Out == null) {
+                head2Out = new Node(i + 20);
+                head2 = head2Out;
+            } else {
+                head2Out.next = new Node(i + 20);
+                head2Out = head2Out.next;
+            }
+        }
+
+        Node loopNode = new Node(1000);
+        loopNode.next = loopNode;
+        Node tail = loopNode;
+        for (i = 0; i < loopLength; i++) {
+            Node node = new Node(1000 + i);
+            node.next = tail;
+            loopNode.next = node;
+            loopNode = loopNode.next;
+        }
+
+        tail.value = 0;
+
+        if (head1Out != null) {
+            head1Out.next = tail;
+        }
+
+        for (i = 0; i < head1OutLength; i++) {
+            loopNode = loopNode.next;
+        }
+
+        if (loopNode == tail) {
+            loopNode = loopNode.next;
+        }
+
+        loopNode.value = 1;
+
+
+        if (head2Out != null) {
+            head2Out.next = loopNode;
+        }
+
         return new Node[]{head1, head2};
     }
 }
