@@ -3,6 +3,8 @@ package algorithm.leetcode;
 import algorithm.leetcode.base.DListNode;
 import algorithm.leetcode.base.ListNode;
 
+import static algorithm.leetcode.Test.*;
+
 /**
  * Author: Aaron
  * Create Date: 2022/5/18
@@ -128,52 +130,5 @@ public class Top1 {
         head.next = null;
 
         return newHead;
-    }
-
-
-    private static ListNode createListNode() {
-        ListNode head = new ListNode(1);
-        ListNode node = head;
-        for (int i = 2; i < 11; i++) {
-            node.next = new ListNode(i);
-            node = node.next;
-        }
-        return head;
-    }
-
-    private static DListNode createDListNode() {
-        DListNode head = new DListNode(1);
-        DListNode node = head;
-        DListNode pre = null;
-        node.pre = pre;
-        for (int i = 2; i < 11; i++) {
-            node.next = new DListNode(i);
-            pre = node;
-            node = node.next;
-            node.pre = pre;
-        }
-        return head;
-    }
-
-    private static void printList(ListNode head) {
-        ListNode node = head;
-        while (node != null) {
-            System.out.print(node.value + " --> ");
-            node = node.next;
-        }
-    }
-
-    private static void printDList(DListNode head) {
-        DListNode node = head;
-        while (node != null) {
-            System.out.print("[" + (node.pre == null ? "null" : node.pre.value) + "<-]"
-                     + node.value + " --> ");
-            node = node.next;
-        }
-    }
-
-    private static void println(String msg) {
-        System.out.println();
-        System.out.println(msg);
     }
 }
