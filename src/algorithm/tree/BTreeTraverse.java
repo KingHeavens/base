@@ -25,42 +25,42 @@ public class BTreeTraverse {
         Printer.println("post" + node.value);
     }
 
-    public void preTrverse(TNode root) {
+    public void preTraverse(TNode root) {
         if (root == null) {
             return;
         }
         Printer.println(root.value + ",");
-        preTrverse(root.left);
-        preTrverse(root.right);
+        preTraverse(root.left);
+        preTraverse(root.right);
     }
 
-    public void inTrverse(TNode root) {
+    public void inTraverse(TNode root) {
         if (root == null) {
             return;
         }
-        preTrverse(root.left);
+        preTraverse(root.left);
         Printer.println(root.value + ",");
-        preTrverse(root.right);
+        preTraverse(root.right);
     }
 
-    public void postTrverse(TNode root) {
+    public void postTraverse(TNode root) {
         if (root == null) {
             return;
         }
-        preTrverse(root.left);
-        preTrverse(root.right);
+        preTraverse(root.left);
+        preTraverse(root.right);
         Printer.println(root.value + ",");
     }
 
-    public void preTrverseUnRecur(TNode root) {
+    public void preTraverseUnRecur(TNode root) {
 
     }
 
-    public void inTrverseUnRecur(TNode root) {
+    public void inTraverseUnRecur(TNode root) {
 
     }
 
-    public void postTrverseUnRecur(TNode root) {
+    public void postTraverseUnRecur(TNode root) {
 
     }
 
